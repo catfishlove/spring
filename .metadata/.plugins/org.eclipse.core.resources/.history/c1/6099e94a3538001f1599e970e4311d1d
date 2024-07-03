@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"> <!-- UTF-8 문자 인코딩을 사용합니다 -->
+<title>/static/index.html</title> <!-- 페이지 제목을 설정합니다 -->
+</head>
+<body>
+	<div class="container">
+		<h1>인덱스 페이지 입니다</h1> <!-- 페이지 제목을 표시합니다 -->
+		<ul>
+			<li><a href="/boot02/hello">hello spring boot</a></li> <!-- hello spring boot 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/fortune">오늘의 운세</a></li> <!-- 오늘의 운세 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/member">회원 한명의 정보</a></li> <!-- 회원 한명의 정보 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/member2">회원 한명의 정보2</a></li> <!-- 회원 한명의 정보2 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/friends">친구 목록</a></li> <!-- 친구 목록 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/members">회원 목록</a></li> <!-- 회원 목록 페이지로 이동하는 링크를 제공합니다 -->
+		</ul>
+		
+		<form action="/boot02/send" method="post">
+    	<input type="text" name="msg" placeholder="할말 입력..."/> <!-- 사용자가 메시지를 입력할 수 있는 텍스트 입력 필드 -->
+    	<button type="submit">전송</button> <!-- 폼을 전송하는 버튼 -->
+		</form>
+
+		<br>
+
+		<form action="/boot02/send2" method="post">
+    	<input type="text" name="msg" placeholder="할말 입력..."/> <!-- 사용자가 메시지를 입력할 수 있는 텍스트 입력 필드 -->
+    	<button type="submit">전송</button> <!-- 폼을 전송하는 버튼 -->
+		</form>
+		
+		<!-- action="/boot02/send": 폼이 서버로 제출될 때 데이터가 전송될 경로를 지정합니다. 
+		/boot02/send2 경로로 post 방식으로 데이터를 전송함. 
+		
+		method="post" >> 폼 데이터를 전송할 http 메소드를 지정함. (post 방식) 
+		
+		<input type="text" name="msg" placeholder="할말 입력..."/>
+		ㄴ 사용자가 텍스트를 입력할 수 있는 입력필드 생성. 
+		name 속성은 서버로 전송될 때의 데이터 이름을 나타냄. 
+		placeholder 속성은 입력 필드 내의 힌트 텍스트 제공함. 
+		
+		<button type="submit">전송</button>
+		ㄴ 폼을 제출하는 버튼을 만든다. 
+		
+		각 폼은 이름에 따라 서로 다른 경로로 데이터를 전송함. 
+		
+		
+		 -->
+		
+	</div>
+</body>
+</html>

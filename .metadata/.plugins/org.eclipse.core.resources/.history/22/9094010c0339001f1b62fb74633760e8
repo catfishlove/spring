@@ -1,0 +1,5 @@
+package memberdto;
+
+public class MemberDto {
+
+}

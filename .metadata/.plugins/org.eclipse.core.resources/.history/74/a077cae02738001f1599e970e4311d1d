@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"> <!-- UTF-8 문자 인코딩을 사용합니다 -->
+<title>/static/index.html</title> <!-- 페이지 제목을 설정합니다 -->
+</head>
+<body>
+	<div class="container">
+		<h1>인덱스 페이지 입니다</h1> <!-- 페이지 제목을 표시합니다 -->
+		<ul>
+			<li><a href="/boot02/hello">hello spring boot</a></li> <!-- hello spring boot 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/fortune">오늘의 운세</a></li> <!-- 오늘의 운세 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/member">회원 한명의 정보</a></li> <!-- 회원 한명의 정보 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/member2">회원 한명의 정보2</a></li> <!-- 회원 한명의 정보2 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/friends">친구 목록</a></li> <!-- 친구 목록 페이지로 이동하는 링크를 제공합니다 -->
+			<li><a href="/boot02/members">회원 목록</a></li> <!-- 회원 목록 페이지로 이동하는 링크를 제공합니다 -->
+		</ul>
+		
+		<form action="/boot02/send" method="post">
+			<input type="text" name="msg" placeholder="할말 입력..."/>
+			<button type="submit">전송</button>
+		</form>
+		
+		<br>
+		
+			<form action="/boot02/send2" method="post">
+			<input type="text" name="msg" placeholder="할말 입력..."/>
+			<button type="submit">전송</button>
+		</form>
+		
+	</div>
+</body>
+</html>

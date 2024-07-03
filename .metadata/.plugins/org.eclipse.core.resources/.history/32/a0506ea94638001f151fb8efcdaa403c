@@ -1,0 +1,11 @@
+package com.example.boot03.dto;
+
+public class MemberDto {
+	private int num;
+	private String name;
+	private String addr;
+	
+	public MemberDto() {
+		
+	}
+}
