@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>templates/home.html</title><!-- 페이지 제목을 설정 -->
+</head>
+<body>
+	<div class="container" >
+		<div sec:authorize="isAuthenticated()">
+		<!-- 인증된 사용자인 경우 
+			sec:authorize 는 타임리프에서 spring security의 인증 및 권한 관리를 
+			위한 속성. 속성 값으로는 spel을 사용하여 접근 제어를 할 수 있다. 
+			sec:authorize="isAuthenticated() 는 사용자가 인증 되었을 때 해당 요소가 표시 되도록
+			조건을 지정함. 
+			sec:authorize="!isAuthenticated()는 사용자가 인증되지 않았을 때 요소가 표시되도록
+			지정할 수 있다. -->
+			<strong sec:authentication="name"></strong> 님 로그인중
+			<!-- 현재 사용자의 이름을 출력해줌 
+			sec:authentication는 인증된 사용자 정보를 출력하는 속성.
+			sec:authentication="name"는 현재 사용자의 이름을 출력. 
+			-->
+			<br>
+			<strong>[[${#authentication.principal.username}]]</strong> 님 로그인중
+			<!-- ${#authentication.principal.username}:
+
+				>> ${...}는 Thymeleaf의 표현식 문법입니다. 이를 통해 서버 측 데이터를 HTML에 바인딩할 수 있습니다.
+				>> #authentication은 Spring Security에서 제공하는 인증 객체를 의미합니다.
+				>> principal은 현재 사용자의 인증 주체를 나타내며, 여기서는 인증된 사용자를 의미합니다.
+				>> username은 사용자의 이름을 나타내는 속성입니다. 
+				Spring Security에서 기본적으로 제공하는 사용자 정보 중 하나입니다.  -->
+			<!-- Thymeleaf를 사용해 현재 사용자의 이름 출력 -->
+			<br>
+			<a th:href="@{/user/logout}">로그아웃</a>
+			<!-- 로그아웃 링크를 생성한다. -->
+		</div>
+		<div sec:authorize="!isAuthenticated()">
+		<!-- 인증되지 않은 사용자인 경우 -->
+			로그인중이 아님
+			<!-- 로그인되지 않았음을 표시 -->
+			<a th:href="@{/user/loginform}">로그인 하러가기</a>
+			<!-- 로그인 폼으로 이동하는 링크를 표시함 -->
+		</div>
+	
+		<h1>인덱스 페이지 입니다</h1>
+		<ul>
+			<li><a th:href="@{/play}">놀러가기(로그인 필요 없음)</a></li>
+			<li><a th:href="@{/study?name=kim&amount=999}">공부하러 가기(로그인 필요)</a></li>
+			<li><a th:href="@{/staff/user/list}">회원목록(STAFF, ADMIN 전용)</a></li>
+			<li><a th:href="@{/admin/user/manage}">회원 관리(ADMIN 전용)</a></li>
+		</ul>
+	</div>
+</body>
+</html>

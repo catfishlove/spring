@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="post">
+	
+	<!-- id가 주어진 게시물의 정보를 조회하는 쿼리 정의 -->
+	<select id="getData" parameterType="int" resultType="com.example.boot10.dto.PostDto">
+	<!-- parameterType=int >> 입력 파라미터로 정수형을 받는다.
+		resultType=com.example.boot10.dto.PostDto >> 조회 결과를 매핑할 dto 클래스 타입 지정
+		SQL>> 테이블에서 주어진 id와 일치하는 게시물의 id,title,author 필드를 조회함.
+	 -->	
+		SELECT id, title, author
+		FROM board_post
+		WHERE id=#{id}
+	</select>
+	
+	<!-- 모든 게시물의 목록을 조회하는 쿼리 정의 -->
+	<select id="getList" resultType="com.example.boot10.dto.PostDto">
+	<!-- id 가 getList 인 쿼리를 정의 
+		SQL:board_post 테이블에서 모든 게시물의 id,title,author 필드를 id 오름차순으로 조회.	
+	-->
+		SELECT id, title, author
+		FROM board_post
+		ORDER BY id ASC
+	</select>
+	
+	<!-- 새로운 게시물을 추가하는 쿼리 정의 -->
+	<insert id="insert" parameterType="com.example.boot10.dto.PostDto">
+	<!-- SQL: board_post 테이블에 새로운 게시물의 id, title, author 값을 추가함. -->
+		INSERT INTO board_post
+		(id, title, author)
+		VALUES(#{id}, #{title}, #{author})
+	</insert>
+	
+	<!-- 기존 게시물의 정보를 업데이트하는 쿼리 정의 -->
+	<update id="update" parameterType="com.example.boot10.dto.PostDto">
+		UPDATE board_post
+		SET title=#{title}, author=#{author}
+		WHERE id=#{id}
+	</update>
+	
+	<!-- id가 주어진 게시물을 삭제하는 쿼리 정의 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM board_post
+		WHERE id=#{id}
+	</delete>
+	
+	<!-- 새로운 게시물의 id를 생성하기 위한 시퀀스 조회 쿼리 정의 -->
+	<select id="getSequence" resultType="int">
+		SELECT board_post_seq.NEXTVAL
+		FROM DUAL
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

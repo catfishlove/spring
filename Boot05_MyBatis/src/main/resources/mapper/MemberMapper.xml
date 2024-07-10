@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+<!-- 이 XML 파일에서 정의하는 SQL 구문들의 네임스페이스를 member로 지정. 이는 MyBatis의 Mapper인터페이스와 매핑  -->
+	
+	<!-- Update 쿼리 정의 -->
+	<!-- 쿼리란? 데이터베이스에서 데이터를 조작하거나 조회하기 위해 사용되는 SQL 문장을 의미함
+	SQL 쿼리는 데이터베이스에게 특정 작업을 수행하도록 명령하는 명령어들의 집합
+	주로 다음과 같은 작업을 수행할 때 사용. -->
+	
+	<!-- 
+	데이터 조회: SELECT 문을 사용하여 데이터베이스에서 데이터를 가져옵니다. 이때 필요한 데이터를 지정하거나 조건을 설정할 수 있습니다.
+
+	데이터 삽입: INSERT 문을 사용하여 데이터베이스에 새로운 데이터를 추가합니다. 삽입될 데이터의 값을 지정하여 추가할 수 있습니다.
+	
+	데이터 업데이트: UPDATE 문을 사용하여 데이터베이스에 있는 데이터의 값을 수정합니다. 수정할 필드와 조건을 지정하여 업데이트 작업을 수행할 수 있습니다.
+	
+	데이터 삭제: DELETE 문을 사용하여 데이터베이스에서 특정 데이터를 삭제합니다. 삭제할 데이터를 식별하는 조건을 설정하여 삭제 작업을 수행할 수 있습니다.	
+	  -->
+	<update id="update" parameterType="MemberDto">
+	<!-- update 라는 id를 가진 업데이트 쿼리를 정의  -->
+		UPDATE member
+		SET name=#{name}, addr=#{addr}
+		WHERE num=#{num}
+	<!-- Member 테이블에서 num이 주어진 값과 일치하는 레코드의 name 값과 addr 필드를 업데이트함. -->
+	</update>
+	
+		<!-- 
+		parameter로 전달된 데이터가 int type 이기 때문에 parameterType="int" 라고 작성한다.
+		select 된 row 하나의 정보를 MemberDto 객체에 담아야 하기 때문에 
+		resultType="com.example.boot05.dto.MemberDto" 라고 작성한다. 
+	 -->
+	 <!-- 데이터 조회 쿼리 정의 -->
+	<select id="getData" parameterType="int" resultType="MemberDto">
+		SELECT num, name, addr
+		FROM member
+		WHERE num=#{num}
+	<!-- member 테이블에서 num 이 주어진 값과 일치하는 레코드의 num, name, addr 필드를 조회한다.
+	조회 결과는 memberDto 객체에 매핑됨  --> 
+	</select>
+	
+	<!-- update 는 수정하여 바로 반영하기 때문에 객체에 매핑 X get은 결과를 가져와 테이블에 
+	띄우기 때문에 객체 매핑 O -->
+	
+	<!-- parameterType 으로 전달된 데이터는 숫자 1개이기 때문에 #{} 안에 문자열을 아무거나 적어도 동작한다 -->
+	<!--  데이터 삭제 쿼리 정의 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM member
+		WHERE num=#{num }
+	<!-- member테이블에서 num이 주어진 값과 일치하는 레코드를 삭제함 -->
+	</delete>
+	
+	<!-- 모든 데이터 조회 쿼리 정의 -->
+	<select id="getList" resultType="MemberDto">
+		SELECT num, name, addr
+		FROM member
+		ORDER BY num ASC
+	<!-- member 테이블에서 모든 레코드의 num, name, addr 필드를 조회하며 num 필드를 오름차순으로 
+	정렬하여 결과를 반환 -->
+	</select>
+	<!-- select 된 row 하나를 어떤 type 에 넣을것인가를
+		설정해주면 mybits 가 자동으로 select 된 row 하나하나를 해당 type 객체에 넣어준다. -->
+		
+		<!-- #{name} 은 MemberDto 객체의 getName() 메소드를 호출해서 리턴되는 값을 해당 위치에 바인딩하라는 의미이다. -->
+		<!-- #{addr} 은 MemberDto 객체의 getName() 메소드를 호출해서 리턴되는 값을 해당 위치에 바인딩하라는 의미이다. -->
+	<!-- 데이터 삽입 쿼리 정의  -->
+	<insert id="insert" parameterType="MemberDto">
+	<!--  insert 라는 id 를 가진 데이터 삽입 쿼리를 정의. -->
+		INSERT INTO member
+		(num, name, addr)
+		VALUES(member_seq.NEXTVAL, #{name}, #{addr})
+	<!-- member 테이블에 새로운 레코드를 삽입. num 필드는 시퀀스로 생성되며, 
+	name과 addr은 memberdto 객체에서 받아온 값을 사용. -->
+	</insert>
+</mapper>

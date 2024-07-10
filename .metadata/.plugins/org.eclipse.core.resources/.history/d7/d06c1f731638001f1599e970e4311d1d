@@ -1,4 +1,0 @@
-# spring boot applcaitio의 설정을 여기서 할 수 있다 
-spring.application.name=TestWeb
-
-server.port=8888

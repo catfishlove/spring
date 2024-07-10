@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>templates/user/login_fail.html</title>
+</head>
+<body>
+	<script>
+		alert("아이디 혹은 비밀번호가 틀려요");
+		<!-- 경고창으로 아이디 혹은 비밀번호가 틀렸음을 알림 -->
+		location.href="[[@{/user/loginform}]]";
+		//로그인 폼으로 redirect 
+		//location.href="[[@{/user/loginform}]]";는 
+		//Thymeleaf의 특수 문법인 [[...]]을 사용하여 로그인 폼으로의 URL을 동적으로 생성합니다. 
+		//이 부분은 실제로는 ${...}로 수정되어야 하며, 
+		//실제로는 JavaScript 내에서 정적 URL을 사용하는 것이 일반적입니다.
+		
+	</script>
+</body>
+</html>

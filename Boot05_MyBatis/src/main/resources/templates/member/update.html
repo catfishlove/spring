@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<script>
+		//수정한 회원의 이름이 "김구라" 라면 아래의 code는 alert("김구라 님의 정보를 수정했습니다."); 가 된다.
+		alert("[[${param.name}]] 님의 정보를 수정했습니다");
+		
+		//아래의 code는 location.href="/boot05/member/list"; 가 된다. 
+		location.href="[[@{/member/list}]]";
+		//되돌아가는 결과를 낼 수 있다. 해당 코드는 자바스크립트로 만들어놓은 결과이므로. 
+	</script>
+</body>
+</html>

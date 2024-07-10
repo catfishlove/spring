@@ -1,4 +1,0 @@
-spring.application.name=Boot03_jsp
-
-server.port=8888
-server.servlet.context-path=/boot03

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>templates/todo/list2.html</title>
+</head>
+<body>
+	<div class="container">
+	<a th:href="@{/todo/insertform}">할일추가</a>
+	<!-- 
+	<a> 태그: HTML에서 링크를 생성하는 태그입니다.
+	th:href>>Thymeleaf에서 링크의 주소를 지정하는 속성입니다. 
+	@{} 안에 있는 /todo/insertform은 절대 경로로, 
+	클라이언트가 이 링크를 클릭할 경우 /todo/insertform으로 이동하도록 설정됩니다.
+	@{/todo/insertform}>> Thymeleaf의 URL 표현식으로, 
+	/todo/insertform 경로를 상대 경로로 표현합니다. -->
+	<h1>할일 목록 입니다.</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>이름</th>
+				<th>주소</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>
