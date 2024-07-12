@@ -20,19 +20,6 @@ public class UserController {
 		return "user/denied";
 	}
 	
-	//ROLL_STAFF, ROLL_ADMIN 만 요청 가능
-	@GetMapping("/staff/user/list")
-	public String userList() {
-		
-		return "user/list";
-	}
-	//ROLL_ADMIN 만 요청 가능
-	@GetMapping("/admin/user/manage")
-		public String userManage() {
-			
-			return "user/manage";
-		}
-	
 	@GetMapping("/user/loginform")
 	public String loginform() {
 		// templates/user/loginform.html 페이지로 forward 이동해서 응답 

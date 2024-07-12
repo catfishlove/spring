@@ -14,6 +14,7 @@ public class SwaggerConfig {
 				.title("API 문서 입니다")
 				.version("1.0")
 				.description("api with swagger");
+		
 		OpenAPI api=new OpenAPI().info(info);
 		
 		return api;

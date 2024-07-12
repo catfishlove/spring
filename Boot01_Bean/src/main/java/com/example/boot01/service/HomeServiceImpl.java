@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * 어노테이션들(@Service, @Repository, @Controller 등)의 기반이 되는 어노테이션입니다. 
  * 이들 어노테이션들은 모두 @Component를 확장하여 구체화된 목적을 가지고 있습니다.
  * 
- * spring이 관리하는 객체로 만든느 방법
+ * spring이 관리하는 객체로 만드는 방법
  * 
  *  1. component scan 이 일어나는 위치에 클래스가 존재해야 한다.
  *  2. 적절한 어노테이션이 클래스에 붙어있어야한다. 
