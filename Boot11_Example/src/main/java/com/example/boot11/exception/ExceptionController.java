@@ -33,4 +33,13 @@ public class ExceptionController {
 		// /templates/error/password/html템플릿 페이지로 응답		
 		return "redirect:/user/pwd_updateform";
 	}
+	
+	@ExceptionHandler(NotOwnerException.class)
+	public String notOwner(NotOwnerException noe, Model model) {
+		//"exception" 이라는 키값으로 예외 객체를 담는다.
+		model.addAttribute("exception", noe);
+		
+		//view 페이지에서 에러 정보를 응답한다. 
+		return "error/info";
+	}
 }

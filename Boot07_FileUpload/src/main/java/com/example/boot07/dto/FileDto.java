@@ -21,6 +21,5 @@ public class FileDto {
 	private String saveFileName;
 	private long fileSize;
 	private MultipartFile myFlie;
-	
-	
+		
 }

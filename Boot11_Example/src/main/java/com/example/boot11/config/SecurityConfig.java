@@ -21,21 +21,41 @@ public class SecurityConfig {
 	 *  또한 SecurityFilterChain 객체도 스프링이 관리하는 Bean 이 되어야 한다  
 	 */
 	@Bean //메소드에서 리턴되는 SecurityFilterChain 을 bean 으로 만들어준다.
+	//securityFilterChain: HTTP 요청에 대한 보안 설정을 적용하는 필터체인. 
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 		String[] whiteList= {"/", "/user/loginform", "/user/login_fail", "/user/expired",
-					"/user/signup_form", "/user/signup", "/error", "/upload/images/*"};
-		
+					"/user/signup_form", "/user/signup", "/error", "/upload/images/*","/file/list","/file/download"};
+	//사용자 인증 없이 접근할 수 없는 부분을 포함하는 코드 	
 		
 		httpSecurity
-		.csrf(csrf->csrf.disable())
+		.csrf(csrf->csrf.disable()) //CSRF 보호 기능을 비활성화 함.
 		.authorizeHttpRequests(config ->
-			config
+			config //HTTP 요청에 대한 인가 설정을 한다. 
 				.requestMatchers(whiteList).permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/staff/**").hasAnyRole("ADMIN", "STAFF")
 				.anyRequest().authenticated()
 		)
-		.formLogin(config ->
+		/*
+		 *  .requestMatchers(whiteList).permitAll()
+
+whiteList 배열에 포함된 URL 패턴들에 대해 인증 없이 접근을 허용하는 설정입니다.
+즉, "/", "/user/loginform", "/user/login_fail" 등 whiteList 배열에 포함된 경로들은 모든 사용자가 로그인 없이도 접근할 수 있습니다.
+.requestMatchers("/admin/**").hasRole("ADMIN")
+
+/admin/ 경로 및 하위 경로에 대해서는 ADMIN 역할을 가진 사용자만 접근할 수 있도록 설정합니다.
+예를 들어, /admin/dashboard, /admin/users 등의 경로는 ADMIN 역할을 가진 사용자만 접근할 수 있습니다.
+.requestMatchers("/staff/**").hasAnyRole("ADMIN", "STAFF")
+
+/staff/ 경로 및 하위 경로에 대해서는 ADMIN 또는 STAFF 역할을 가진 사용자가 접근할 수 있도록 설정합니다.
+즉, /staff/schedule, /staff/tasks 등의 경로는 ADMIN 또는 STAFF 역할을 가진 사용자만 접근할 수 있습니다.
+.anyRequest().authenticated()
+
+나머지 모든 요청에 대해서는 인증된 사용자만 접근할 수 있도록 설정합니다.
+이 설정은 위에서 명시한 URL 패턴들 이외의 모든 요청에 적용됩니다.
+		 * 
+		 */
+		.formLogin(config -> //폼 기반 로그인 설정을 함.
 			config
 				//인증을 거치지 않은 사용자를 리다일렉트 시킬 경로 설정 
 				.loginPage("/user/required_loginform")
@@ -62,6 +82,7 @@ public class SecurityConfig {
 			config
 				.maximumSessions(1)//최대 허용 세션 갯수
 				.expiredUrl("/user/expired")//허용 세션 갯수가 넘어서 로그인 해제된 경우 리다일렉트 이동시킬 경로
+				//사이트에서 로그인을 할 수 있는 세션을 설정함. 
 		);
 		
 		return httpSecurity.build();
