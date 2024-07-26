@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cafe">
+	
+	<!-- 
+		sql 요소는 재사용 가능한 sql 코드 조각을 정의한다. 검색 조건에 따라 WHERE 절을 선택적으로 생성.
+		-condition == 'title_content' 일 때 title 또는 content keyword를 포함하는 데이터를 검색.
+		-condition == 'title' 일때 title 에서 keyword를 포함하는 데이터를 검색.
+		-condition == 'writer' 일때 writer에서 keyword를 포함하는 데이터를 검색. 
+	 -->
+	<sql id="search">
+		<choose>
+			<when test="condition == 'title_content'">
+				WHERE title LIKE '%'||#{keyword}||'%' OR content LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="condition == 'title'">
+				WHERE title LIKE '%'||#{keyword}||'%'
+			</when>
+			<when test="condition == 'writer'">
+				WHERE writer LIKE '%'||#{keyword}||'%'
+			</when>
+		</choose>
+	</sql>
+	
+	<!-- sql 요소를 사용하여 컬럼 리스트를 정의한다. 
+	-num, writer, title, content, viewCount, regdate를 선택하며 regdate는  
+	'YYYY.MM.DD HH24:MI' 형식으로 포맷팅-->
+	
+	<sql id="column">
+		num,writer,title,content,viewCount, TO_CHAR(regdate, 'YYYY.MM.DD HH24:MI') AS regdate
+	</sql>
+	
+	<!-- update 요소는 cafeDto 를 매개변수로 받아서 board_cafe 테이블을 업데이트 한다.
+	title 과 content를 cafeDto 에서 가져와서 num 이 일치하는 레코드를 업데이트 한다.  -->
+
+	<update id="update" parameterType="cafeDto">
+		UPDATE board_cafe
+		SET title=#{title}, content=#{content}
+		WHERE num=#{num}
+	</update>
+	<!-- delete 요소는 int 형식의 매개변수를 받아서 board_cafe테이블에서 num이 일치하는 레코드를 삭제합니다  -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM board_cafe
+		WHERE num=#{num}
+	</delete>
+	
+	<!-- 
+		select 요소는 int 형식의 매개변수를 받아서 cafeDto 형식의 결과를 반환합니다.
+		-column sqp 조각을 포함하여 num 이 일치하는 레코드의 데이터를 조회합니다. 	
+	 -->
+	<select id="getData" parameterType="int" resultType="cafeDto">
+		SELECT <include refid="column"/>
+		FROM board_cafe
+		WHERE num=#{num}
+	</select>
+	<!-- 
+		parameter 로 전달되는 CafeDto 에는 검색 keyword 가 있을수 있다. 
+		keyword 가 있다면 keword 에 해당하는 글 목록중에서 이전글의 글번호와 다음글의 글번호를 select 해야한다.
+		getDetail 요소는 cafeDto를 매개변수로 받아서 cafeDto 형식의 결과를 반환한다.
+		-column sql 조각을 포함하고, search sql 조각에 따라서 where 절이 추가됩니다.
+		num과 함께 이전 글의 num(prevNum)과 다음 글의 num(nextNum)을 LAG와 LEAD의 함수를 이용하여 조회한다.
+	 -->
+	<select id="getDetail" parameterType="cafeDto" resultType="cafeDto">
+		SELECT *
+		FROM
+			(SELECT <include refid="column"/>, 
+				LAG(num, 1, 0) OVER (ORDER BY num DESC) AS prevNum,
+				LEAD(num, 1, 0) OVER (ORDER BY num DESC) AS nextNum
+			FROM board_cafe
+			<include refid="search"/> ) result1
+		WHERE num=#{num}
+	</select>
+	<!--
+		insert 요소는 cafeDto를 매개변수로 받아서 board_cafe테이블에 새로운 레코드를 삽입합니다.
+		-writer,title,content,viewCount,regdate는 cafeDto에서 가져오고 
+		num은 oard_cafe_seq.NEXTVAL에서 생성 
+	 -->
+	<insert id="insert" parameterType="cafeDto">
+		INSERT INTO board_cafe
+		(num, writer, title, content, viewCount, regdate)
+		VALUES(board_cafe_seq.NEXTVAL, #{writer}, #{title}, #{content}, 0, SYSDATE)
+	</insert>
+	<!-- select 요소는 cafeDto 를 매개변수로 받아서 int 형식의 결과를 반환합니다
+	search sql 조각에 따라서 where 절이 추가되어 board_cafe테이블의 총 레코드 수를 조회합니다. -->
+	<select id="getCount" resultType="int" parameterType="cafeDto">
+		SELECT NVL(MAX(ROWNUM), 0)
+		FROM board_cafe
+		<include refid="search"/>
+	</select>
+	
+	<select id="getList" parameterType="cafeDto" resultType="cafeDto">
+		SELECT *
+		FROM
+			(SELECT result1.*, ROWNUM AS rnum
+			FROM 
+				(SELECT <include refid="column"/>
+				FROM board_cafe
+				<include refid="search"/>
+				ORDER BY num DESC) result1)
+		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum}
+	</select>
+</mapper>

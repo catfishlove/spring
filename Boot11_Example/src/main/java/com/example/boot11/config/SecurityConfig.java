@@ -24,10 +24,15 @@ public class SecurityConfig {
 	//securityFilterChain: HTTP 요청에 대한 보안 설정을 적용하는 필터체인. 
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 		String[] whiteList= {"/", "/user/loginform", "/user/login_fail", "/user/expired",
-					"/user/signup_form", "/user/signup", "/error", "/upload/images/*","/file/list","/file/download"};
+					"/user/signup_form", "/user/signup", "/error", "/upload/images/*","/file/list","/file/download", "/cafe/list", "/cafe/detail", "/editor/images/*",
+					"/cafe/comment_list", "/gallery/list"};
 	//사용자 인증 없이 접근할 수 없는 부분을 포함하는 코드 	
 		
 		httpSecurity
+		.headers(header -> 
+		//동일한 origin 에서 inframe 을 사용할 수 있도록 설정(default 값은 사용불가)
+			header.frameOptions(option->option.sameOrigin()) //SmartEditor에서 필요함
+				)
 		.csrf(csrf->csrf.disable()) //CSRF 보호 기능을 비활성화 함.
 		.authorizeHttpRequests(config ->
 			config //HTTP 요청에 대한 인가 설정을 한다. 

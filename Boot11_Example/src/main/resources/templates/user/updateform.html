@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <title>/user/updateform</title>
 <style>
+	/* 프로필 이미지를 원형으로 표시하기 위한 스타일 설정 */
 	#profileImage{
 		width: 100px;
 		height: 100px;
 		border: 1px solid #cecece;
-		border-radius: 50%;
+		border-radius: 50%; /*원형으로 만들기 위해 테두리 반경 설정*/
 	}
+	/*숨길 이미지 파일 input 요소의 스타일 설정*/
 	#image{
-		display: none;
+		display: none;/*화면에서 보이지 않도록 설정*/
 	}
 	
 </style>
@@ -19,18 +21,23 @@
 <body>
 	<div class="container">
 		<h3>회원 정보 수정 양식</h3>
+		<!-- 폼을 통해 사용자 정보를 수정 -->
 		<form th:action="@{/user/update}" method="post" enctype="multipart/form-data">
 			<div>
+				<!-- 사용자 명을 입력받는 필드 -->
 				<label for="userName">사용자명</label>
 				<input type="text" id="userName" th:value="${dto.userName}" readonly/>
 			</div>
 			<div>
+				<!-- 이메일을 입력받는 필드 -->
 				<label for="email">이메일</label>
 				<input type="text" id="email" name="email" th:value="${dto.email}"/>
 			</div>
 			<div>
+			<!-- 프로필 이미지를 클릭하거나 드래그 앤 드롭으로 변경할 수 있는 영역 -->
 				<label>프로필 이미지 (아래 이미지를 클릭하거나 이미지를 drop 하세요)</label>
 				<div id="dropZone">
+					<!-- 프로필 이미지를 표시할 링크 -->
 					<a href="javascript:" id="profileLink">
 						<th:block th:if="${dto.profile eq null}">
 							<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -38,19 +45,22 @@
 								<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
 							</svg>
 						</th:block>
+						<!-- 프로필 이미지가 있는 경우 해당 이미지로 표시 -->
 						<th:block th:unless="${dto.profile eq null}">
 							<img id="profileImage" th:src="@{/upload/images/{name}(name=${dto.profile})}" alt="프로필 이미지" />
 						</th:block>
 					</a>
 				</div>
 			</div>
+			<!-- 폼 제출 및 취소 버튼 -->
 			<button type="submit">수정확인</button>
 			<button type="reset">취소</button>
+			<!-- 이미지 파일을 선택할 수 있는 숨겨진 input 요소 -->
 			<input type="file" id="image" name="image"  accept="image/*" />
 		</form>
 	</div>
 	<script>
-		//링크를 클릭했을때 
+		//링크를 클릭했을때 파일 선택 창을 띄우기 위한 코드
 		document.querySelector("#profileLink").addEventListener("click", ()=>{
 			// input type="file" 요소를 강제 클릭해서 파일 선택 창을 띄운다.
 			document.querySelector("#image").click();
@@ -59,7 +69,7 @@
 		document.querySelector("#image").addEventListener("change", (e)=>{
 			//선택된 파일 배열 객체를 얻어낸다
 			const files=e.target.files;
-			//만일 파일 데이터가 존재한다면
+			//만일 파일 데이터가 존재한다면(데이터가 선택 되었을 경우)
 			if(files.length > 0){
 				//파일로 부터 데이터를 읽어들일 객체 생성
 				const reader=new FileReader();
@@ -86,34 +96,37 @@
 			}
 		});
 		
-		// div 의 참조값 
+		<!-- 드래그 앤 드롭을 위한 코드 -->
 		const dropZone=document.querySelector("#dropZone");
+		/*드래그 오버 이벤트를 처리하여 기본 동작을 막는다*/ 
 		dropZone.addEventListener("dragover", (e)=>{
 			e.preventDefault(); //기본 이벤트 막기
 		});
+		//드롭 이벤트를 처리하여 파일을 읽어들인다. 
 		dropZone.addEventListener("drop", (e)=>{
 			e.preventDefault(); //기본 이벤트 막기
 			// event 객체 e 에는 drop 된 파일에 대한 정보가 들어 있다.
+			//드래그 앤 드롭된 파일 정보를 가져온다.
 			const files=e.dataTransfer.files;
 				
 			//이미지 파일인지 여부를 알아내서 이미지 파일이 아니면 동작하지 않도록 설정
 			const reg=/image/;
 			if(!reg.test(files[0].type)){ //파일의 type 이 만일 정규표현식을 통과하지 못하면
 				alert("이미지 파일이 아닙니다!");
-				return; // 함수를 여기서 끝내기 
+				return; // 이미지 파일이 아닌 경우 함수를 여기서 끝내기 
 			}
 			
 			// input type="file" 에 drop 된 파일을 넣어주기
 			document.querySelector("#image").files=files;
-			
+			//파일이 선택 되었을 경우
 			if(files.length>0){
-				//파일로 부터 데이터를 읽어들일 객체 생성
+				//파일로 부터 데이터를 읽어들일 객체 생성 (FilReader객체를 사용하여 파일을 읽어들임)
 				const reader=new FileReader();
 				//파일을 DataURL 형식의 문자열로 읽어들이기
 				reader.readAsDataURL(files[0]);
 				//로딩이 완료(파일데이터를 모드 읽었을때) 되었을때 실행할 함수 등록
 				reader.onload=(event)=>{
-					//읽은 파일 데이터 얻어내기 
+					//읽은 파일 데이터 얻어내기 data url 형식으로 얻어낸다.
 					const data=event.target.result;
 					// img 형식의 html 문자열을 만들어서 
 					let img=`<img id="profileImage" src="${data}">`;
@@ -127,21 +140,3 @@
 </html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-</body>
-</html>

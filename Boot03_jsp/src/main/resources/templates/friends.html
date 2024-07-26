@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+</head>
+<body>
+    <h1>친구 이름 목록</h1>
+    <ul>
+        <li th:each="tmp : ${friends}">${tmp}</li>
+    </ul>
+</body>
+</html>

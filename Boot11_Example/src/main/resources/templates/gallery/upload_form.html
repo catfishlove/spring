@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Image Upload Form</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>이미지 업로드 폼</h1>
+        <form th:action="@{/gallery/upload}" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="caption">설명</label>
+                <input type="text" name="caption" id="caption"/>
+            </div>
+            <div>
+                <label for="image">이미지</label>
+                <input type="file" name="image" id="fileUpload" accept="image/*" />
+            </div>
+            <div>
+                <label>다운로드 이미지(아래 이미지를 클릭하거나 이미지를 drop 하세요)</label>
+                <div id="dropZone">
+                    <!-- 다운로드 이미지를 표시할 링크 -->
+                    <a href="#" id="downloadLink">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-arrow-down" viewBox="0 0 16 16">
+                                <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293z"/>
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/>
+                            </svg>
+                        </th:block>
+                    </a>
+                </div>
+            </div>
+            <button type="submit">업로드</button>
+        </form>
+    </div>
+</body>
+</html>
+
+

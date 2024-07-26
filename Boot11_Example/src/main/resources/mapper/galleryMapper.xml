@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="gallery">
+
+<!-- 데이터 베이스 테이블에서 조회할 컬럼들을 정의한 SQL 조각.
+	다른 쿼리에서 재사용 가능. 아래는 테이블의 칼럼들을 나타낸다. 한 곳에 모아두면 
+	여러 쿼리에서 반복해서 쓸 필요가 없다. -->
+	<sql id="column">
+		num,writer,title,orgFileName,fileSize,regdate
+	</sql>
+	
+		
+	<delete id="delete" parameterType="int">
+		DELETE FROM board_gallery
+		WHERE num=#{num}
+	</delete>
+	
+	<select id="getList" parameterType="galleryDto" resultType="galleryDto">
+		SELECT *
+		FROM
+			(SELECT result1.*, ROWNUM AS rnum
+			FROM
+				(SELECT num, writer, caption, saveFileName, regdate
+				FROM board_gallery
+				ORDER BY num DESC) result1)
+		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum}
+	</select>
+	<select id="getCount" resultType="Integer">
+		SELECT NVL(MAX(ROWNUM), 0)
+		FROM board_gallery
+	</select>
+	<insert id="insert" parameterType="galleryDto">
+		INSERT INTO board_gallery
+		(num, writer, caption, saveFileName, regdate)
+		VALUES(board_gallery_seq.NEXTVAL, #{writer}, #{caption}, #{saveFileName}, SYSDATE)
+	</insert>
+	<select id="getData" parameterType="int" resultType="galleryDto">
+		SELECT *
+		FROM
+			(SELECT num, writer, caption, saveFileName, regdate,
+				LAG(num, 1, 0) OVER (ORDER BY num DESC) AS prevNum,
+				LEAD(num, 1, 0) OVER (ORDER BY num DESC) AS nextNum
+			FROM board_gallery
+			ORDER BY num DESC)
+		WHERE num=#{num}
+	</select>
+	
+</mapper>
+	

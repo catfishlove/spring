@@ -161,8 +161,26 @@ public class FileServiceImpl implements FileService{
 }
 
 
+/*
+	 * getList(Model model, FileDto dto):
+	
+	목적: 페이지별 파일 목록을 가져와서 Model에 담습니다.
+	동작: 페이지 번호를 기반으로 파일 목록을 DB에서 가져오고, 페이지 네비게이션에 필요한 정보들도 계산하여 Model에 추가합니다.
+	saveFile(FileDto dto):
+	
+	목적: 업로드된 파일을 저장하고, 그에 대한 정보를 DB에 저장합니다.
+	동작: 업로드된 파일을 서버에 저장하고, 파일 정보(원본 파일명, 저장된 파일명 등)을 DTO에 설정한 후 DB에 저장합니다.
+	getFileData(int num):
+	
+	목적: 특정 파일의 다운로드를 처리합니다.
+	동작: 파일의 원본 이름을 인코딩하여 헤더에 설정하고, 파일 스트림을 ResponseEntity에 담아 클라이언트에게 전송합니다.
+	deleteFile(int num):
+	
+	목적: 특정 파일을 삭제합니다.
+	동작: 삭제할 파일의 소유
 
-
+ * 
+ */
 
 
 
